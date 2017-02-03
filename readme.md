@@ -28,7 +28,8 @@
  seguida por 0 o más letras (mayúsculas o minúsculas), dígitos o guiones bajos.
 
 variable ::= son nombres que inician con una letra minúscula seguida por 0 o más letras
- (mayúsculas o minúsculas), dígitos o guiones bajos.```
+ (mayúsculas o minúsculas), dígitos o guiones bajos.
+ ```
 
  Los elementos léxicos deberán ser identificados y regresados como TOKENS por el analizador léxico
  (scanner) del lenguaje, mientras que el cumplimiento de la gramática deberá ser verificado por el
