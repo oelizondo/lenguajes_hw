@@ -24,9 +24,9 @@ VAR  = 118
 RAR  = 119
 ERR  = 200
 ROCK = 120
-CUANT = 121
+CNT = 121
 ALPHABET_CAP = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-CUANTIFICADORES = ['A', 'E']
+CNTIFICADORES = ['A', 'E']
 ALPHABET_MIN = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 DIGITS       = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -37,19 +37,19 @@ DIGITS       = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 
 #       &     |     >     <     =     @   Mayus   Minus  $     (      )   dig   _    .    ~   ,   raro  ESP
-MT = [[1,    2,    ERR,   5,   6,     12,    8,     9,   END,   LP,   RP,  11, ERR, ERR, ERR, ERR,  ERR,  0    ], # edo inicial
+MT = [[1,    2,    ERR,   5,   6,     12,    8,     9,   END,   LP,   RP,  11, ERR, 0, ERR, ERR,  ERR,  0    ], # edo inicial
       [AMP,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  AMP    ], # edo 1 - ampersand
       [ERR,  PIPE, ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  PIPE    ], # edo 2 - pipe
       [ERR,  ERR,  LTEQ,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  GT   ], # edo 3 - >
-      [ERR,  ERR,  ERR, ERR,    5,  ERR,  ERR,  ERR,   ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR  ], # edo 4 - <
-      [ERR,  ERR,  ERR,  ERR,   3,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  LTEQ ], # edo 5 - =>
+      [ERR,  ERR,  ERR, ERR,    5,  ERR,  ERR,  ERR,   ERR,  ERR,   ERR, ERR, ERR,  ERR, ERR, ERR, ERR,  ERR  ], # edo 4 - <
+      [ERR,  ERR,  ERR,  ERR,   3,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR,  ERR, ERR, ERR, ERR,  LTEQ ], # edo 5 - =>
       [EQ ,  EQ ,  ROCK, EQ ,  ERR , EQ ,  EQ ,   EQ ,  EQ ,  EQ ,   EQ , EQ , EQ , EQ , EQ , EQ , EQ ,  EQ    ], #edo 6 - =
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  7,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  CAP   ], #edo 7 - Mayúsculas
+      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  7,   ERR,  ERR,  ERR,   ERR, ERR, ERR,   ERR, ERR, ERR, ERR,  CAP   ], #edo 7 - Mayúsculas
       [ERR,  ERR,  ERR,  ERR,  ERR,  CTE,   8,     8,   CTE,  CTE,   CTE,  8,    8, CTE, ERR, CTE, CTE,  CTE  ], #edo 8 - Mayus, Predicado, Funcion
       [ERR,  ERR,  ERR,  ERR,  VAR,  VAR,   9,     9,   VAR,  VAR,   VAR,  9,    9, VAR, ERR, VAR, VAR,  VAR  ], #edo 9 - variable
       [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  END,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR,  10,  ERR  ], #edo 10  - ERROR
       [INT,  INT,  INT,  INT,  INT,  INT,  INT,   INT,  END,  INT,   INT,  11, INT, INT, INT, INT,  INT, INT  ],  #edo 11 - enteros
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  CUANT,   ERR,  END,  ERR,   ERR,  11, ERR, ERR, ERR, ERR,  ERR, ERR  ]  #edo 12 - cuantificadores
+      [CNT,  CNT,  CNT,  CNT,  CNT,  CNT,  12,   CNT,  END,  CNT,   CNT,  11, CNT, CNT, CNT, CNT,  CNT, CNT  ]  #edo 12 - cuantificadores
       ]
 
 edo = 0 # número de estado en el autómata
@@ -60,9 +60,7 @@ def filtro(c):
     if c in ALPHABET_CAP:
         return 6
     elif c in ALPHABET_MIN:
-        return LOW - 100
-    elif c == ',':
-        return COM - 100
+        return 7
     elif c == '&':
         return 0
     elif c == '|':
@@ -78,32 +76,15 @@ def filtro(c):
     elif c == '$':
         return END - 100
     elif c == '(':
-        return LP - 100
+        return 9
     elif c == ')':
-        return RP - 100
+        return 10
     elif c in DIGITS:
          return 11
     elif c == '_':
-        return US - 100
-    elif c == '.':
-        return DOT - 100
-    elif c == '~':
-        return TIL - 100
-    elif c == ' ' or ord(c) == 9 or ord(c) == 10 or ord(c) == 13: # blancos
+        return 12
+    elif c == ' ' or ord(c) == 9 or ord(c) == 10 or ord(c) == 13 or ord(c) == 46 or ord(c) == 44 or ord(c) == 126: # blancos
         return 17 # 17 es raro
-
-    #PONER BLANKS
-    else: # caracter raro
-        return RAR - 100
-
-    # Se ponen?????
-    # elif c == 'CTE'
-    #     return CTE - 100
-    # elif c == 'VAR'
-    #     return VAR - 100
-    # elif c == ERR)'
-    #     return ERR - 100
-
 
 _c = None    # siguiente caracter
 _leer = True # indica si se requiere leer un caracter de la entrada estándar
@@ -136,13 +117,24 @@ def obten_token():
         elif edo == ROCK:
             lexema += _c
             print "Condicional", lexema
-        elif edo == CUANT:
-            lexema += _c
+        elif edo == CNT:
+            _leer = False
             print "Cuantificador", lexema
         elif edo == CTE:
             _leer = False
-            lexema += _c
             print "Constante", lexema
+        elif edo == VAR:
+            _leer = False
+            print "Variable", lexema
+        elif edo == LP:
+            lexema += _c
+            print "Delimitador", lexema
+        elif edo == RP:
+            lexema += _c
+            print "Delimitador", lexema
+        elif edo == EQ:
+            lexema += _c
+            print "Delimitador", lexema
         elif edo == ERR:
             _leer = False # el último caracter no es raro
             print "ERROR! palabra ilegal", lexema
