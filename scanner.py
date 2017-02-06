@@ -21,12 +21,12 @@ import os
 #       [  5, VAR, VAR, VAR, VAR, VAR, ERR, VAR, VAR,  5 ,  5  ], # edo 5 - letras, digitos, _
 #       [  5, ERR, ERR, ERR, FLT, ERR, ERR, END, ERR,  5 ,  5  ]] # edo 6 - estado de error
 
-AMP = 100
+AMP  = 100
 PIPE = 101
 GT   = 102 # >
 LT   = 103 # <
 EQ   = 104
-LTEQ = 116
+LTEQ = 116 #check for filter function # issue????
 AT   = 105
 CAP  = 106
 LOW  = 107
@@ -34,13 +34,15 @@ END  = 108
 LP   = 109
 RP   = 110
 INT  = 111
-US   = 112
+US   = 112 #_
 DOT  = 113
 TIL  = 114 # ~
 COM  = 115
 CTE  = 117
 VAR  = 118
-ERR = 200
+RAR  = 119
+ERR  = 200
+
 
 ALPHABET_CAP = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 ALPHABET_MIN = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -50,21 +52,115 @@ MT = [[1,    2,    ERR,   5,   6,     7,    8,     9,   END,   LP, RP,   ERR, ER
       [AMP,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  1   ], # edo 1 - ampersand
       [ERR,  PIPE, ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  2   ], # edo 2 - pipe
       [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  GT    ], # edo 3 - >
-      [ERR,  ERR,  LTEQ,  ERR,  ERR,  ERR, ERR,  ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  ERR    ], # edo 4 - <
+      [ERR,  ERR,  LTEQ,  ERR,  ERR,  ERR, ERR,  ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,   ERR,  ERR    ], # edo 4 - <
       [ERR,  ERR,  ERR,  ERR,    3,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  LTEQ   ], # edo 5 - =>
       [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  0   ], #edo 6 - =
       [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  CAP,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  0   ], #edo 7 - Mayúsculas
       [ERR,  ERR,  ERR,  ERR,  CTE,  CTE,   8,     8,   CTE,  CTE, CTE,  8,    8, CTE, ERR, CTE,  CTE,  CTE ], #edo 8 - M, P, F
       [ERR,  ERR,  ERR,  ERR,  VAR,  VAR,   9,     9,   VAR,  VAR, VAR,  9,    9, VAR, ERR, VAR,  VAR,  VAR ], #edo 9 - variable
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR, ERR,   ERR,    END,  ERR, ERR,  ERR, ERR, ERR, ERR, ERR,   10,  ERR ], #edo 10  - ERROR
-      ]
+      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR, ERR,   ERR,    END,  ERR, ERR,  ERR, ERR, ERR, ERR, ERR,   10,  ERR ]] #edo 10  - ERROR
 
 def filtro(c):
+    #Regresa el número de columna asociado al tipo de caracter dado(c)
     if c in ALPHABET_CAP:
-        return 6
+        return CAP - 100
     elif c in ALPHABET_MIN:
-        return 7
-    elif 
+        return LOW - 100
+    elif c == ',':
+        return COM - 100
+    elif c == '&'
+        return AMP - 100
+    elif c == '|'
+        return PIPE - 100
+    elif c == '>'
+        return GT - 100
+    elif c == '<'
+        return LT - 100
+    # elif c == 'LTEQ' que es esto?
+    #     return LTEQ - 100
+    elif c == '@'
+        return AT - 100
+    elif c == '$'
+        return END - 100
+    elif c == '('
+        return LP - 100
+    elif c == ')'
+        return RP - 100
+    elif c == '0' or c == '1' or c == '2' or \
+         c == '3' or c == '4' or c == '5' or \
+         c == '6' or c == '7' or c == '8' or c == '9': # INT's #Possiblle issue due to indentation
+         return INT - 100
+    elif c == '_'
+        return US - 100
+    elif c == '.'
+        return DOT - 100
+    elif c == '~'
+        return TIL - 100
+
+    # Se ponen?????
+    # elif c == 'CTE'
+    #     return CTE - 100
+    # elif c == 'VAR'
+    #     return VAR - 100
+    # elif c == ERR)'
+    #     return ERR - 100
+
+    #PONER BLANKS
+
+    else: # caracter raro
+        return RAR - 100
+
+
+_c = None    # siguiente caracter
+_leer = True # indica si se requiere leer un caracter de la entrada estándar
+
+# Función principal: implementa el análisis léxico
+def obten_token():
+    #Implementa un analizador léxico: lee los caracteres de la entrada estándar
+    global _c, _leer
+    edo = 0 # número de estado en el autómata
+    lexema = "" # palabra que genera el token
+    while (True):
+        while edo < 100:    # mientras el estado no sea ACEPTOR ni ERROR
+            if _leer: _c = sys.stdin.read(1)
+            else: _leer = True
+            edo = MT[edo][filtro(_c)]
+            if edo < 100 and edo != 0: lexema += _c
+        if edo == INT:
+            _leer = False # ya se leyó el siguiente caracter
+            print "Entero", lexema
+            return INT
+        elif edo == FLT:
+            _leer = False # ya se leyó el siguiente caracter
+            print "Flotante", lexema
+            return FLT
+        elif edo == OPB:
+            lexema += _c  # el último caracter forma el lexema
+            print "Operador", lexema
+            return OPB
+        elif edo == LRP:
+            lexema += _c  # el último caracter forma el lexema
+            print "Delimitador", lexema
+            return LRP
+        elif edo == RRP:
+            lexema += _c  # el último caracter forma el lexema
+            print "Delimitador", lexema
+            return RRP
+        elif edo == END:
+            print "Fin de expresion"
+            return END
+        elif edo == VAR:
+            _leer = False
+            print "Variable", lexema
+            return VAR
+        elif edo ==  COM:
+            print "Delimitador , "
+            return COM
+        else:
+            leer = False # el último caracter no es raro
+            print "ERROR! palabra ilegal", lexema
+            return ERR
+
 
 
 def main():
