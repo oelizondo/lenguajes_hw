@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import os
 
@@ -47,18 +48,18 @@ ERR  = 200
 ALPHABET_CAP = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 ALPHABET_MIN = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-#       &     |     >     <     =     @   Mayus   Minus  $     (      )  dig   _   .     ~   ,  raro  ESP
-MT = [[1,    2,    ERR,   5,   6,     7,    8,     9,   END,   LP, RP,   ERR, ERR  ERR, ERR, ERR, ERR,  0   ], # edo inicial
-      [AMP,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  1   ], # edo 1 - ampersand
-      [ERR,  PIPE, ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  2   ], # edo 2 - pipe
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  GT    ], # edo 3 - >
-      [ERR,  ERR,  LTEQ,  ERR,  ERR,  ERR, ERR,  ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,   ERR,  ERR    ], # edo 4 - <
-      [ERR,  ERR,  ERR,  ERR,    3,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  LTEQ   ], # edo 5 - =>
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  0   ], #edo 6 - =
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  CAP,   ERR,  ERR,  ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR,  0   ], #edo 7 - Mayúsculas
-      [ERR,  ERR,  ERR,  ERR,  CTE,  CTE,   8,     8,   CTE,  CTE, CTE,  8,    8, CTE, ERR, CTE,  CTE,  CTE ], #edo 8 - M, P, F
-      [ERR,  ERR,  ERR,  ERR,  VAR,  VAR,   9,     9,   VAR,  VAR, VAR,  9,    9, VAR, ERR, VAR,  VAR,  VAR ], #edo 9 - variable
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR, ERR,   ERR,    END,  ERR, ERR,  ERR, ERR, ERR, ERR, ERR,   10,  ERR ]] #edo 10  - ERROR
+#       &     |     >     <     =     @   Mayus   Minus  $     (      )   dig   _    .    ~   ,   raro  ESP
+MT = [[1,    2,    ERR,   5,   6,     7,    8,     9,   END,   LP,   RP,  ERR, ERR, ERR, ERR, ERR, ERR,  0    ], # edo inicial
+      [AMP,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  1    ], # edo 1 - ampersand
+      [ERR,  PIPE, ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  2    ], # edo 2 - pipe
+      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  GT   ], # edo 3 - >
+      [ERR,  ERR,  LTEQ, ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  ERR  ], # edo 4 - <
+      [ERR,  ERR,  ERR,  ERR,    3,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  LTEQ ], # edo 5 - =>
+      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  0    ], #edo 6 - =
+      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  CAP,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  0    ], #edo 7 - Mayúsculas
+      [ERR,  ERR,  ERR,  ERR,  CTE,  CTE,   8,     8,   CTE,  CTE,   CTE,  8,    8, CTE, ERR, CTE, CTE,  CTE  ], #edo 8 - M, P, F
+      [ERR,  ERR,  ERR,  ERR,  VAR,  VAR,   9,     9,   VAR,  VAR,   VAR,  9,    9, VAR, ERR, VAR, VAR,  VAR  ], #edo 9 - variable
+      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  END,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR,  10,  ERR  ]] #edo 10  - ERROR
 
 def filtro(c):
     #Regresa el número de columna asociado al tipo de caracter dado(c)
@@ -68,33 +69,33 @@ def filtro(c):
         return LOW - 100
     elif c == ',':
         return COM - 100
-    elif c == '&'
+    elif c == '&':
         return AMP - 100
-    elif c == '|'
+    elif c == '|':
         return PIPE - 100
-    elif c == '>'
+    elif c == '>':
         return GT - 100
-    elif c == '<'
+    elif c == '<':
         return LT - 100
     # elif c == 'LTEQ' que es esto?
     #     return LTEQ - 100
-    elif c == '@'
+    elif c == '@':
         return AT - 100
-    elif c == '$'
+    elif c == '$':
         return END - 100
-    elif c == '('
+    elif c == '(':
         return LP - 100
-    elif c == ')'
+    elif c == ')':
         return RP - 100
     elif c == '0' or c == '1' or c == '2' or \
          c == '3' or c == '4' or c == '5' or \
          c == '6' or c == '7' or c == '8' or c == '9': # INT's #Possiblle issue due to indentation
          return INT - 100
-    elif c == '_'
+    elif c == '_':
         return US - 100
-    elif c == '.'
+    elif c == '.':
         return DOT - 100
-    elif c == '~'
+    elif c == '~':
         return TIL - 100
 
     # Se ponen?????
@@ -130,32 +131,6 @@ def obten_token():
             _leer = False # ya se leyó el siguiente caracter
             print "Entero", lexema
             return INT
-        elif edo == FLT:
-            _leer = False # ya se leyó el siguiente caracter
-            print "Flotante", lexema
-            return FLT
-        elif edo == OPB:
-            lexema += _c  # el último caracter forma el lexema
-            print "Operador", lexema
-            return OPB
-        elif edo == LRP:
-            lexema += _c  # el último caracter forma el lexema
-            print "Delimitador", lexema
-            return LRP
-        elif edo == RRP:
-            lexema += _c  # el último caracter forma el lexema
-            print "Delimitador", lexema
-            return RRP
-        elif edo == END:
-            print "Fin de expresion"
-            return END
-        elif edo == VAR:
-            _leer = False
-            print "Variable", lexema
-            return VAR
-        elif edo ==  COM:
-            print "Delimitador , "
-            return COM
         else:
             leer = False # el último caracter no es raro
             print "ERROR! palabra ilegal", lexema
