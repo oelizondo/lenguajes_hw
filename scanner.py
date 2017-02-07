@@ -2,12 +2,13 @@
 import sys
 import os
 
+# Estados Finales
 AMP  = 100
 PIPE = 101
 GT   = 102 # >
 LT   = 103 # <
 EQ   = 104
-LTEQ = 116 # <= =>   check for filter function # issue????
+LTEQ = 116 #=>
 AT   = 105
 CAP  = 106
 LOW  = 107
@@ -25,41 +26,34 @@ RAR  = 119
 ERR  = 200
 ROCK = 120
 CNT = 121
+
+# Arreglos
 ALPHABET_CAP = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-CNTIFICADORES = ['A', 'E']
-ALPHABET_MIN = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+ALPHABET_LOW = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 DIGITS       = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+CNTIFICADORES = ['A', 'E'
 
-
-
-
-
-
-
+#Matriz principal de estados
 #       &     |     >     <     =     @   Mayus   Minus  $     (      )   dig   _    .    ~   ,   raro  ESP
-MT = [[1,    2,    ERR,   5,   6,     12,    8,     9,   END,   LP,   RP,  11, ERR, 0, ERR, ERR,  ERR,  0    ], # edo inicial
+MT = [[1,    2,    ERR,   5,   6,     12,    8,     9,   END,   LP,   RP,  11, ERR, 0, ERR, ERR,  ERR,  0       ], # edo inicial
       [AMP,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  AMP    ], # edo 1 - ampersand
-      [ERR,  PIPE, ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  PIPE    ], # edo 2 - pipe
-      [ERR,  ERR,  LTEQ,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  GT   ], # edo 3 - >
-      [ERR,  ERR,  ERR, ERR,    5,  ERR,  ERR,  ERR,   ERR,  ERR,   ERR, ERR, ERR,  ERR, ERR, ERR, ERR,  ERR  ], # edo 4 - <
-      [ERR,  ERR,  ERR,  ERR,   3,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR,  ERR, ERR, ERR, ERR,  LTEQ ], # edo 5 - =>
-      [EQ ,  EQ ,  ROCK, EQ ,  ERR , EQ ,  EQ ,   EQ ,  EQ ,  EQ ,   EQ , EQ , EQ , EQ , EQ , EQ , EQ ,  EQ    ], #edo 6 - =
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  7,   ERR,  ERR,  ERR,   ERR, ERR, ERR,   ERR, ERR, ERR, ERR,  CAP   ], #edo 7 - Mayúsculas
-      [ERR,  ERR,  ERR,  ERR,  ERR,  CTE,   8,     8,   CTE,  CTE,   CTE,  8,    8, CTE, ERR, CTE, CTE,  CTE  ], #edo 8 - Mayus, Predicado, Funcion
-      [ERR,  ERR,  ERR,  ERR,  VAR,  VAR,   9,     9,   VAR,  VAR,   VAR,  9,    9, VAR, ERR, VAR, VAR,  VAR  ], #edo 9 - variable
-      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  END,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR,  10,  ERR  ], #edo 10  - ERROR
-      [INT,  INT,  INT,  INT,  INT,  INT,  INT,   INT,  END,  INT,   INT,  11, INT, INT, INT, INT,  INT, INT  ],  #edo 11 - enteros
-      [CNT,  CNT,  CNT,  CNT,  CNT,  CNT,  12,   CNT,  END,  CNT,   CNT,  11, CNT, CNT, CNT, CNT,  CNT, CNT  ]  #edo 12 - cuantificadores
-      ]
-
-edo = 0 # número de estado en el autómata
+      [ERR,  PIPE, ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  PIPE   ], # edo 2 - pipe
+      [ERR,  ERR,  LTEQ,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  GT    ], # edo 3 - >
+      [ERR,  ERR,  ERR, ERR,    5,  ERR,  ERR,  ERR,   ERR,  ERR,   ERR, ERR, ERR,  ERR, ERR, ERR, ERR,  ERR    ], # edo 4 - <
+      [ERR,  ERR,  ERR,  ERR,   3,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR,  ERR, ERR, ERR, ERR,  LTEQ   ], # edo 5 - =>
+      [EQ ,  EQ ,  ROCK, EQ ,  ERR , EQ ,  EQ ,   EQ ,  EQ ,  EQ ,   EQ , EQ , EQ , EQ , EQ , EQ , EQ ,  EQ     ], #edo 6 - =
+      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  7,   ERR,  ERR,  ERR,   ERR, ERR, ERR,   ERR, ERR, ERR, ERR,  CAP    ], #edo 7 - Mayúsculas
+      [ERR,  ERR,  ERR,  ERR,  ERR,  CTE,   8,     8,   CTE,  CTE,   CTE,  8,    8, CTE, ERR, CTE, CTE,  CTE    ], #edo 8 - Mayus, Predicado, Funcion
+      [ERR,  ERR,  ERR,  ERR,  VAR,  VAR,   9,     9,   VAR,  VAR,   VAR,  9,    9, VAR, ERR, VAR, VAR,  VAR    ], #edo 9 - variable
+      [ERR,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  END,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR,  10,  ERR    ], #edo 10  - ERROR
+      [INT,  INT,  INT,  INT,  INT,  INT,  INT,   INT,  END,  INT,   INT,  11, INT, INT, INT, INT,  INT, INT    ],  #edo 11 - enteros
+      [CNT,  CNT,  CNT,  CNT,  CNT,  CNT,  12,   CNT,  END,  CNT,   CNT,  11, CNT, CNT, CNT, CNT,  CNT, CNT     ]]  #edo 12 - cuantificadores
 
 def filtro(c):
-    global edo
     #Regresa el número de columna asociado al tipo de caracter dado(c)
     if c in ALPHABET_CAP:
         return 6
-    elif c in ALPHABET_MIN:
+    elif c in ALPHABET_LOW:
         return 7
     elif c == '&':
         return 0
@@ -89,12 +83,12 @@ def filtro(c):
 _c = None    # siguiente caracter
 _leer = True # indica si se requiere leer un caracter de la entrada estándar
 tokens = []
-
+edo = 0
 # Función principal: implementa el análisis léxico
 def obten_token():
     #Implementa un analizador léxico: lee los caracteres de la entrada estándar
     global _c, _leer, tokens, edo
-    edo = 0
+    edo = 0     # Estado inicial
     lexema = "" # palabra que genera el token
     while (True):
         while edo < 100:    # mientras el estado no sea ACEPTOR ni ERROR
@@ -103,59 +97,47 @@ def obten_token():
             edo = MT[edo][filtro(_c)]
             if edo < 100 and edo != 0: lexema += _c
         if edo == INT:
-            _leer = False # ya se leyó el siguiente caracter
-            print "Entero", lexema
-            #return INT
+            _leer = False
+            return INT
         elif edo == AMP:
             lexema += _c
-            print "And", lexema
-            #return AMP
+            return AMP
         elif edo == PIPE:
             lexema += _c
-            print "Or", lexema
-            #return PIPE
+            return PIPE
         elif edo == LTEQ:
             lexema += _c
-            print "Doble Implicacion", lexema
-            #return LTEQ
+            return LTEQ
         elif edo == ROCK:
             lexema += _c
-            print "Condicional", lexema
-            #return ROCK
+            return ROCK
         elif edo == CNT:
             _leer = False
-            print "Cuantificador", lexema
-            #return CNT
+            return CNT
         elif edo == CTE:
             _leer = False
-            print "Constante", lexema
-            #return CTE
+            return CTE
         elif edo == VAR:
             _leer = False
-            print "Variable", lexema
-            #return VAR
+            return VAR
         elif edo == LP:
             lexema += _c
-            print "Delimitador", lexema
-            #return LP
+            return LP
         elif edo == RP:
             lexema += _c
-            print "Delimitador", lexema
-            #return RP
+            return RP
         elif edo == EQ:
             lexema += _c
-            print "Delimitador", lexema
-            #return EQ
+            return EQ
         elif edo == ERR:
             _leer = False # el último caracter no es raro
-            print "ERROR! palabra ilegal", lexema
             return
 
+        # Reinicia y lee una palabra nueva
         tokens.append(edo)
         if edo == END: return tokens
         lexema = ''
         edo = 0
-
 
 def main():
     obten_token()
