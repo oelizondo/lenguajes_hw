@@ -34,7 +34,7 @@ DIGITS       = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 #Matriz principal de estados
 #       &     |     >     <     =     @   Mayus   Minus  $     (      )   dig   _    .    ~   ,   raro  ESP
-MT = [[1,    2,    ERR,   5,   6,     12,    8,     9,   END,   LP,   RP,  11, ERR, 0, ERR, ERR,  ERR,  0       ], # edo inicial
+MT = [[1,    2,    ERR,   5,   6,     12,    8,     9,   END,   LP,   RP,  11, ERR,  0, ERR, ERR,  ERR,  0       ], # edo inicial
       [AMP,  ERR,  ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  AMP    ], # edo 1 - ampersand
       [ERR,  PIPE, ERR,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  PIPE   ], # edo 2 - pipe
       [ERR,  ERR,  LTEQ,  ERR,  ERR,  ERR,  ERR,   ERR,  ERR,  ERR,   ERR, ERR, ERR, ERR, ERR, ERR, ERR,  GT    ], # edo 3 - >
@@ -82,11 +82,10 @@ def filtro(c):
 _c = None    # siguiente caracter
 _leer = True # indica si se requiere leer un caracter de la entrada estándar
 tokens = []
-edo = 0
 # Función principal: implementa el análisis léxico
 def obten_token():
     #Implementa un analizador léxico: lee los caracteres de la entrada estándar
-    global _c, _leer, tokens, edo
+    global _c, _leer, tokens
     edo = 0     # Estado inicial
     lexema = "" # palabra que genera el token
     while (True):

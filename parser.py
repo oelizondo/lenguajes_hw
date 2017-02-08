@@ -11,10 +11,9 @@
 
 # los elementos lexicos (delimitadores, constantes y operadores)
 # son reconocidos por el scanner
-#
 
 import sys
-import obten_token as scanner
+import scanner as scanner
 
 # Empata y obtiene el siguiente token
 def match(tokenEsperado):
@@ -28,36 +27,50 @@ def match(tokenEsperado):
 def parser():
     global token
     token = scanner.obten_token() # inicializa con el primer token
-    exp()
+    oracion()
     if token == scanner.END:
         print "Expresion bien construida!!"
     else:
         error("expresion mal terminada")
 
-# Modulo que reconoce expresiones
-def exp():
-    if token == scanner.INT or token == scanner.FLT:
-        match(token) # reconoce Constantes
-        exp1()
-    elif token == scanner.VAR :
-        match(token)
-        exp1()
-    elif token == scanner.LRP:
-        match(token) # reconoce Delimitador (
-        exp()
-        match(scanner.RRP)
-        exp1()
-    else:
-        error("expresion mal iniciada")
+# Funciones de elementos no-terminales
+# modulo de elemento no terminal oracion
+def oracion():
+	if token == scanner.CNT:
+		match(token)
+		termino()
+    # if token == scanner.CNT:
+    #     match(token)
 
-# Modulo auxiliar para reconocimiento de expresiones
-def exp1():
-    if token == scanner.OPB or token == scanner.COM:
-        match(token) # reconoce operador
-        exp()
-        exp1()
-    elif token == scanner.LRP:
-        exp()
+
+# modulo de elemento no terminal oracion1
+def oracion1():
+	if token == scanner.ROCK or token == scanner.LTEQ or token == scanner.AMP or token == scanner.PIPE:
+		match(token)
+		oracion()
+		match(token)
+		oracion1()
+
+# modulo de elemento no terminal terminos
+def terminos():
+    match(token)
+    termino()
+    match(token)
+    terminop()
+
+# modulo de elemento no terminal termino primo
+def terminop():
+    match(token)
+    terminos()
+
+# modulo de elemento no terminal termino
+def termino():
+    if token == scanner.VAR:
+        match(token)
+        if token == scanner.LP:
+            match(token)
+            terminos()
+            match(scanner.RP)
 
 # Termina con un mensaje de error
 def error(mensaje):
