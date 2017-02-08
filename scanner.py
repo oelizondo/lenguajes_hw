@@ -97,38 +97,50 @@ def obten_token():
             if edo < 100 and edo != 0: lexema += _c
         if edo == INT:
             _leer = False
+            print "(INT)"
             return INT
         elif edo == AMP:
             lexema += _c
+            print "(AND)"
             return AMP
         elif edo == PIPE:
             lexema += _c
+            print "(OR)"
             return PIPE
         elif edo == LTEQ:
             lexema += _c
+            print "(DOBLE IMPLICACION)"
             return LTEQ
         elif edo == ROCK:
             lexema += _c
+            print "(CONDICIONAL)"
             return ROCK
         elif edo == CNT:
             _leer = False
+            print "(CUANTIFICADOR)"
             return CNT
         elif edo == CTE:
             _leer = False
+            print "(CTE)"
             return CTE
         elif edo == VAR:
             _leer = False
+            print "(VAR)"
             return VAR
         elif edo == LP:
             lexema += _c
+            print "(LP)"
             return LP
         elif edo == RP:
             lexema += _c
+            print "(RP)"
             return RP
         elif edo == EQ:
             lexema += _c
+            print "(EQ)"
             return EQ
         elif edo == ERR:
+            print "(ERR)"
             _leer = False # el último caracter no es raro
             return
 
