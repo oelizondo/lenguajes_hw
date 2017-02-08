@@ -32,7 +32,7 @@ def parser():
     token = scanner.obten_token() # inicializa con el primer token
     oracion()
     if token == scanner.END:
-        print "Expresion bien construida!!"
+        print ">>ENTRADA CORRECTA<<"
     else:
         error(">>ERROR SINTÁCTICO<<")
 
