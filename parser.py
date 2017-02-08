@@ -20,8 +20,11 @@ def match(tokenEsperado):
     global token
     if token == tokenEsperado:
         token = scanner.obten_token()
+        if token == scanner.END:
+            print ">>ENTRADA CORRECTA<<"
+            sys.exit(1)
     else:
-        error("token equivocado")
+        error(">> ERROR LÉXICO <<")
 
 # Funcion principal: implementa el analisis sintactico
 def parser():
@@ -31,7 +34,7 @@ def parser():
     if token == scanner.END:
         print "Expresion bien construida!!"
     else:
-        error("expresion mal terminada")
+        error(">>ERROR SINTÁCTICO<<")
 
 # Funciones de elementos no-terminales
 # modulo de elemento no terminal oracion
@@ -45,11 +48,11 @@ def oracion():
 
 # modulo de elemento no terminal oracion1
 def oracion1():
-	if token == scanner.ROCK or token == scanner.LTEQ or token == scanner.AMP or token == scanner.PIPE:
-		match(token)
-		oracion()
-		match(token)
-		oracion1()
+    if token == scanner.ROCK or token == scanner.LTEQ or token == scanner.AMP or token == scanner.PIPE:
+        match(token)
+        oracion()
+        match(token)
+        oracion1()
 
 # modulo de elemento no terminal terminos
 def terminos():

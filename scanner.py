@@ -138,6 +138,10 @@ def obten_token():
             lexema += _c
             print "(EQ)"
             return EQ
+        elif edo == END:
+            print "(END)"
+            _leer = False
+            return END
         elif edo == ERR:
             print "(ERR)"
             _leer = False # el último caracter no es raro
