@@ -30,3 +30,13 @@
 variable ::= son nombres que inician con una letra minúscula seguida por 0 o más letras
  (mayúsculas o minúsculas), dígitos o guiones bajos.
 ```
+
+### *Usar*:
+```console
+python
+
+>>> from parser import parser
+>>> parser()
+@A.x1 (Cartero(x1) => @E.y2 (Perro(y2) && Muerde(y2, x1))) $
+
+```
